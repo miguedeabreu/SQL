@@ -18,7 +18,7 @@ connection.connect(function(error){
 
 //ELIMINAR DE LA BASE DE DATOS LAS NOTAS QUE TENGAN +10AÑOS
 
-let sql= "DELETE FROM `work`.`mark` WHERE (`date` < '2012-03-01')";
+let sql= 'DELETE FROM mark WHERE (date < "2012-03-01")';
 connection.query(sql, function(err, res){
     if (err){
         console.log(err);
@@ -29,7 +29,7 @@ connection.query(sql, function(err, res){
 
 //ACTUALIZACION DE NOTA INFERIOR A 5 QUE SEA 5
 
-let sql="UPDATE `work`.`mark` SET `mark` = '5' WHERE (`mark` < 5)";
+let sql= 'UPDATE mark SET mark = 5 WHERE (mark < 5)';
 connection.query(sql, function(err, res){
     if (err){
         console.log(err);

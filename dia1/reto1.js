@@ -52,7 +52,7 @@ connection.query(sql, function(err, res){
 
 // AÑADIR COLUMNAS
 
-let sql= 'ALTER TABLE `codenotch`.`alumno` ADD COLUMN `direccion` VARCHAR(45)'
+let sql= 'ALTER TABLE alumno ADD COLUMN direccion VARCHAR(45)'
 connection.query(sql, function(err, res){
     if (err){
         console.log(err);
@@ -63,7 +63,7 @@ connection.query(sql, function(err, res){
 
 // BORRAR COLUMNAS
 
-let sql= 'ALTER TABLE `codenotch`.`alumno` DROP COLUMN `direccion`'
+let sql= 'ALTER TABLE alumno DROP COLUMN direccion'
 connection.query(sql, function(err, res){
     if (err){
         console.log(err);
