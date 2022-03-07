@@ -16,7 +16,7 @@ connection.connect(function(error){
     }
 });
 
-let sql =  `SELECT first_name, last_name, title FROM student JOIN
+let sql =  `SELECT first_name1, last_name1, title FROM student JOIN
             grupo ON (student.id_group = grupo.id_group) JOIN
             subject_teacher ON (grupo.id_group = subject_teacher.id_group) JOIN
             subject ON (subject_teacher.id_subject = subject.id_subject)`
