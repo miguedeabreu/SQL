@@ -12,16 +12,18 @@ class Student
 
 class Mark 
 { 
-    constructor(id_student, id_subject, date, mark, id_student2)
+    constructor(id_student, id_subject, date, mark, id_mark)
     {
         this.id_student  = id_student;
         this.id_subject  = id_subject;
         this.date        = date;
         this.mark        = mark;
-        this.id_student2 = id_student2;
+        this.id_mark     = id_mark;
     }
 
 }
+
+// Students
 
 function getStudent()
 {   
@@ -30,7 +32,7 @@ function getStudent()
     let final = document.getElementById("final")
 
     if (id != "") {
-        url += `?i=${id}`
+        url += `?id_student=${id}`
     }
     let param = 
     {
@@ -96,7 +98,7 @@ function postStudent()
     
     const url = "http://localhost:3000/student";
 
-    if (validar(student))
+    if (validarS(student))
     {
         let param = 
             {
@@ -115,7 +117,7 @@ function postStudent()
             if (result == "-1")
                 showToast("ERROR: Error al insertar el dato" , "bg-danger")
             else
-                showToast("Usuario creado con id: " + result, "bg-success")
+                showToast("Estudiante creado con id: " + result, "bg-success")
 
             console.log(result)
         })
@@ -207,7 +209,7 @@ function deleteStudent() {
     }
 }
 
-function validar(student)
+function validarS(student)
 {
     resultado = false
     if (student.first_name1 == "" || student.first_name1 == "null")
@@ -250,7 +252,7 @@ function validarPut(student)
 function getMark()
 {   
     let url = "http://localhost:3000/mark";
-    let id = document.getElementById("id_student1").value
+    let id = document.getElementById("id_student").value
     let final = document.getElementById("final")
 
     if (id != "") {
@@ -368,6 +370,48 @@ function putMark()
     })
 }
 
+function deleteMark() {
+    let id = document.getElementById("id_mark").value;
+
+    if (id != ""){
+
+        id= Number(id);
+        let mark = new Mark ("", "", "", "", id);
+        
+        const url = "http://localhost:3000/mark";
+
+        let param = 
+            {
+                headers: {"Content-type": "application/json; charset= UTF-8"},
+                body: JSON.stringify(mark),
+                method: "DELETE"
+            }
+    
+        fetch(url, param)
+        .then(function(data)
+        {
+            return data.json()
+        })
+        .then(function(result)
+        {
+            if (!result.error)
+            {
+                showToast("Nota eliminada correctamente", "bg-success")
+            }   
+            else
+            {
+                showToast("El ID de nota no existe", "bg-danger")
+            }    
+        })
+        .catch(function(error)
+        {
+            console.log(error)
+        })
+    } 
+    else {
+        showToast("Introduce un ID", "bg-danger")
+    }
+}
 
 function validar(mark)
 {

@@ -30,7 +30,7 @@ app.get("/student",
             if (request.query.id == null)
                 sql = "SELECT * FROM student";
             else
-                sql = "SELECT * FROM student WHERE id_student=" + request.query.id_student;
+                sql = "SELECT * FROM student WHERE id_student=" + request.query.id;
                 console.log(sql)
     
             connection.query(sql, function (err, result)
@@ -168,7 +168,11 @@ app.put("/mark",
         {
             console.log(request.body);
 
-            let sql =  `UPDATE mark SET id_student= ${request.body.id_student}, id_subject= ${request.body.id_subject}, date= "${request.body.date}", mark= ${request.body.mark} WHERE id_mark = ${request.body.id_mark}`
+            let sql = `UPDATE mark SET id_student= ${request.body.id_student}, 
+                    id_subject= ${request.body.id_subject}, 
+                    date= "${request.body.date}", 
+                    mark= ${request.body.mark} 
+                    WHERE id_mark = ${request.body.id_mark}`
 
             console.log(sql); 
             connection.query(sql, function (err, result) 
@@ -177,6 +181,99 @@ app.put("/mark",
                     console.log(err);
                 else 
                 {
+                    response.send(result);
+                }
+            })
+        }
+        );
+
+app.delete("/mark", 
+        function(request, response)
+        {
+            console.log(request.body);
+            let sql =  `DELETE FROM mark WHERE id_mark= ${request.body.id_mark}`
+            console.log(sql); 
+            connection.query(sql, function (err, result) 
+            {
+                if (err) 
+                    console.log(err);
+                else 
+                {
+                    response.send(result);
+                }
+            })
+        }
+        );
+
+// ENDPOINTS ADICIONALES
+
+app.get("/media", 
+        function(request, response)
+        {
+            console.log(request.query.id)
+            let sql;
+            if (request.query.id != "")
+                sql = "SELECT id_student, AVG (mark) FROM mark WHERE id_student=" + request.query.id
+
+            connection.query(sql, function (err, result)
+            {
+                if (err) {
+                    console.log(err);
+                }
+                else {
+                    response.send(result);
+                }
+            })
+        }
+        );
+
+app.get("/apuntadas", 
+        function(request, response)
+        {
+            console.log(request.query.id)
+            let sql;
+            if (request.query.id != "")
+                sql = "SELECT id_student, id_subject FROM mark WHERE id_student=" + request.query.id
+            else 
+            {
+                sql =  `SELECT first_name1, last_name1, title FROM student JOIN
+                        grupo ON (student.id_group = grupo.id_group) JOIN
+                        subject_teacher ON (grupo.id_group = subject_teacher.id_group) JOIN
+                        subject ON (subject_teacher.id_subject = subject.id_subject)`
+            }
+                
+            connection.query(sql, function (err, result)
+            {
+                if (err) {
+                    console.log(err);
+                }
+                else {
+                    response.send(result);
+                }
+            })
+        }
+        );
+
+app.get("/impartidas",
+        function(request, response)
+        {
+            console.log(request.query.id)
+            let sql;
+            if (request.query.id != "")
+                sql = "SELECT id_teacher, id_subject FROM subject_teacher WHERE id_teacher=" + request.query.id
+            else 
+            {
+                sql =  `SELECT first_name, last_name, title FROM teacher JOIN
+                        subject_teacher ON (teacher.id_teacher = subject_teacher.id_teacher) JOIN
+                        subject ON (subject_teacher.id_subject = subject.id_subject)`
+            }
+                
+            connection.query(sql, function (err, result)
+            {
+                if (err) {
+                    console.log(err);
+                }
+                else {
                     response.send(result);
                 }
             })
